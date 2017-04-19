@@ -22,7 +22,7 @@ using System.Threading.Tasks;
             public float weightKG;
             public float boneKG;
             public float fat;
-            public float water;
+            public double water;
             public float Muscle;
 
             public void clear()

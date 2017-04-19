@@ -207,6 +207,7 @@ namespace GenericHid
 		private RadioButton radInputOutputControl;
 		private RadioButton radInputOutputInterrupt;
         private Button btnReadLogger;
+        private Button btnErase;
         private Button cmdSendOutputReportInterrupt;
 		[System.Diagnostics.DebuggerStepThrough()]
 		private void InitializeComponent()
@@ -243,6 +244,7 @@ namespace GenericHid
             this.radInputOutputControl = new System.Windows.Forms.RadioButton();
             this.radInputOutputInterrupt = new System.Windows.Forms.RadioButton();
             this.btnReadLogger = new System.Windows.Forms.Button();
+            this.btnErase = new System.Windows.Forms.Button();
             this.FraBytesReceived.SuspendLayout();
             this.FraBytesToSend.SuspendLayout();
             this.fraInputReportBufferSize.SuspendLayout();
@@ -599,9 +601,20 @@ namespace GenericHid
             this.btnReadLogger.UseVisualStyleBackColor = true;
             this.btnReadLogger.Click += new System.EventHandler(this.btnReadLogger_Click);
             // 
+            // btnErase
+            // 
+            this.btnErase.Location = new System.Drawing.Point(649, 107);
+            this.btnErase.Name = "btnErase";
+            this.btnErase.Size = new System.Drawing.Size(104, 55);
+            this.btnErase.TabIndex = 19;
+            this.btnErase.Text = "Erase Data";
+            this.btnErase.UseVisualStyleBackColor = true;
+            this.btnErase.Click += new System.EventHandler(this.btnErase_Click);
+            // 
             // FrmMain
             // 
             this.ClientSize = new System.Drawing.Size(784, 756);
+            this.Controls.Add(this.btnErase);
             this.Controls.Add(this.btnReadLogger);
             this.Controls.Add(this.fraSendAndGetContinuous);
             this.Controls.Add(this.fraControlTransfers);
@@ -678,8 +691,9 @@ namespace GenericHid
 			EnableInputReportBufferSize,
 			EnableSendOutputReportInterrupt,
 			ScrollToBottomOfListBox,
-			SetInputReportBufferSize
-		}
+			SetInputReportBufferSize,
+            EnablebtnReadLogger
+        }
 
 		private enum ReportReadOrWritten
 		{
@@ -761,7 +775,11 @@ namespace GenericHid
 						cmdInputReportBufferSize.Enabled = true;
 						break;
 
-					case FormActions.EnableSendOutputReportInterrupt:
+                    case FormActions.EnablebtnReadLogger:
+                        btnReadLogger.Enabled = true;
+                        break;
+                        
+                    case FormActions.EnableSendOutputReportInterrupt:
 
 						cmdSendOutputReportInterrupt.Enabled = true;
 						break;
@@ -857,9 +875,8 @@ namespace GenericHid
 				_hidHandle.Close();
 			}
 
-			// The next attempt to communicate will get a new handle and FileStreams.
-
-			_deviceHandleObtained = false;
+            // The next attempt to communicate will get a new handle and FileStreams.
+            _deviceHandleObtained = false;
 		}
 
 		///  <summary>
@@ -1784,7 +1801,9 @@ namespace GenericHid
 				MyMarshalDataToForm(FormActions.ScrollToBottomOfListBox, "");
 				CloseCommunications();
 				MyMarshalDataToForm(FormActions.EnableGetInputReportInterruptTransfer, "");
-				_transferInProgress = false;
+                MyMarshalDataToForm(FormActions.EnablebtnReadLogger, "");
+                
+                _transferInProgress = false;
 				_sendOrGet = SendOrGet.Send;
 			}
 			catch (Exception ex)
@@ -2144,7 +2163,7 @@ namespace GenericHid
 		private void RequestToSendFeatureReport()
 		{
 			String byteValue = null;
-
+            
 			try
 			{
 				_transferInProgress = true;
@@ -2658,6 +2677,11 @@ namespace GenericHid
                     case 5: // Delete all user Data
                         payload = "FF05" + ws_currentUser.ToString("00") + "55AA55";
                         break;
+
+                    case 0:
+                        btnReadLogger.Enabled = true;
+                        return;
+                
                 }
                 Console.WriteLine (payload);
 
@@ -2787,13 +2811,109 @@ namespace GenericHid
                         else
                             nextUser();
                         break;
+                    case 4:
+
+                        if (ws_currentPart == 1)
+                        {
+                            ws_currentReg.boneKG = (float)buffer[2] / (float)10;
+                            byte[] lByte = new byte[2];
+                            lByte[0] = buffer[3];
+                            lByte[1] = buffer[4];
+                            if ((BitConverter.IsLittleEndian))
+                            {
+                                Array.Reverse(lByte);
+                            }
+
+
+                            ws_currentReg.weightKG = BitConverter.ToUInt16(lByte, 0) / (float)10;
+                            Debug.WriteLine("Weight " + (ws_currentReg.weightKG * 2.20462));
+
+                            //Dim lByte(1) As Byte
+                            lByte[0] = buffer[5];
+                            lByte[1] = buffer[6];
+                            if ((BitConverter.IsLittleEndian))
+                            {
+                                Array.Reverse(lByte);
+                            }
+
+                            ws_currentReg.fat = BitConverter.ToUInt16(lByte, 0) / (float)10;
+                            Debug.WriteLine("Fat " + ws_currentReg.fat + "%");
+
+                            ws_currentPart = 2;
+
+
+                        }
+                        else // part 2
+                        {
+
+                            ushort num = Convert.ToUInt16(buffer[1]);
+
+                            byte b1 = (Byte)(num & 0x1f);
+                            byte b2 = (Byte)((num >> 5) & 0x1f);
+
+
+                            Debug.WriteLine("CheckBox : " + b2);
+
+                            num = Convert.ToUInt16(buffer[2]);
+                            byte b3 = (Byte)(num & 0xf);
+                            byte b4 = (Byte)((num >> 4) & 0xf);
+
+                            ws_currentReg.fecha = Convert.ToDateTime(string.Format("{0}/{1}/{2} ", b3, b1, 2016 + b4));
+                            //Debug.WriteLine("Dia " & b1)
+                            //Debug.WriteLine("Mes " & b3)
+                            //Debug.WriteLine("Ano " & 2016 + b4)
+                            Debug.WriteLine(ws_currentReg.fecha);
+
+
+                            byte[] lByte = new byte[2];
+                            lByte[0] = buffer[3];
+                            lByte[1] = buffer[4];
+                            if ((BitConverter.IsLittleEndian))
+                            {
+                                Array.Reverse(lByte);
+                            }
+
+                            ws_currentReg.water = BitConverter.ToUInt16(lByte, 0) / (float)10;
+
+                            Debug.WriteLine("Water " + ws_currentReg.water + "%");
+                            
+                            lByte[0] = buffer[5];
+                            lByte[1] = buffer[6];
+                            if ((BitConverter.IsLittleEndian))
+                            {
+                                Array.Reverse(lByte);
+                            }
+
+                            ws_currentReg.Muscle = (BitConverter.ToUInt16(lByte, 0)) / (float)10;
+                            Debug.WriteLine("Muscle " + ws_currentReg.Muscle + "%");
+                            
+                            //recordData();
+
+                            ws_currentReg.clear();
+
+
+                            ws_currentPart = 1;
+                            if (ws_currentRegistry < ws_currentRegistryFound)
+                            {
+                                ws_currentRegistry += 1;
+                            }
+                            else
+                            {
+                                ws_currentProcess = 3;
+                                nextUser();
+                                //MyMarshalToForm("NextUser", "")
+                            }
+                        }
+
+                        break;
+
+                    case 5:
+                        nextUser();
+                        break;
                 }
 
                 _transferInProgress = false;
                 ReadAndWriteToDevice();
-
-
-
                 
             }
 
@@ -2814,6 +2934,16 @@ namespace GenericHid
             }
 
 
+        }
+
+        private void btnErase_Click(object sender, EventArgs e)
+        {
+            ws_currentUser = 1;
+            ws_currentProcess = 5;
+            ws_pass = 0;
+            ws_maxUser = 10;
+            btnReadLogger.Enabled = false;
+            ReadAndWriteToDevice();
         }
     }
 }
