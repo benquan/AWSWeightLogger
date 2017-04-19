@@ -35,10 +35,8 @@ using System.Threading.Tasks;
                 Muscle = 0;
             }
         }
-
-
-
-        public class reader
+    
+        public class WSreader
         {
             private WSUser currentUser;
             private int currentProcess;

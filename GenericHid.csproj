@@ -117,7 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="WSClass.cs" />
     <Compile Include="Debugging.cs" />
     <Compile Include="DebuggingDeclarations.cs" />
     <Compile Include="DeviceManagement.cs" />

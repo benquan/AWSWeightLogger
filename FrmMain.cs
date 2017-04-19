@@ -659,20 +659,17 @@ namespace GenericHid
 		private readonly DeviceManagement _myDeviceManagement = new DeviceManagement();
 		private Hid _myHid = new Hid();
 
+        //Q-Soft
+        private int ws_currentUser;
+        private int ws_currentProcess;
+        private int ws_currentPart;
+        private int ws_currentRegistry;
+        private int ws_currentRegistryFound;
+        private WSRegistry ws_currentReg = new WSRegistry();
+        private int ws_maxUser;
+        private int ws_pass;
 
-        private int currentUser;
-        private int  currentProcess;
-        private int  currentPart;
-        private int  currentRegistry;
-        private int  currentRegistryFound;
-
-        private WSRegistry currentReg = new WSRegistry();
-
-
-        private int  maxUser;
-
-        private int  pass;
-
+        
         private enum FormActions
 		{
 			AddItemToListBox,
@@ -1290,7 +1287,13 @@ namespace GenericHid
 					TxtBytesReceived.SelectedText = byteValue + Environment.NewLine;
 				}
 				ScrollToBottomOfListBox();
-			}
+
+                //Q-Soft
+                processScaleResponse(buffer, currentReadOrWritten);
+                
+
+
+            }
 			catch (Exception ex)
 			{
 				DisplayException(Name, ex);
@@ -1298,11 +1301,13 @@ namespace GenericHid
 			}
 		}
 
-		///  <summary>
-		///  Display a message if the user clicks a button when a transfer is in progress.
-		///  </summary>
-		/// 
-		private void DisplayTransferInProgressMessage()
+
+
+        ///  <summary>
+        ///  Display a message if the user clicks a button when a transfer is in progress.
+        ///  </summary>
+        /// 
+        private void DisplayTransferInProgressMessage()
 		{
 			AccessForm(FormActions.AddItemToListBox, "Command not executed because a transfer is in progress.");
 			ScrollToBottomOfListBox();
@@ -2617,13 +2622,13 @@ namespace GenericHid
 
         private void btnReadLogger_Click(object sender, EventArgs e)
         {
-            currentUser = 1;
-            currentProcess = 3;
-            currentPart = 1;
-            currentRegistry = 1;
-            currentRegistryFound = 0;
-            pass = 0;
-            maxUser = 10;
+            ws_currentUser = 1;
+            ws_currentProcess = 3;
+            ws_currentPart = 1;
+            ws_currentRegistry = 1;
+            ws_currentRegistryFound = 0;
+            ws_pass = 0;
+            ws_maxUser = 10;
 
             btnReadLogger.Enabled = false;
 
@@ -2641,19 +2646,21 @@ namespace GenericHid
             {
                 string payload = "";
 
-                switch (currentProcess)
+                switch (ws_currentProcess)
                 {
                     case 3:
-                        payload = "FF03" + currentUser.ToString("00") + "55AA55";
+                        payload = "FF03" + ws_currentUser.ToString("00") + "55AA55";
                         break;
                     case 4: // Read Data
-                        payload = "FF04" + currentUser.ToString("00") + currentPart.ToString("00") + "00" + currentRegistry.ToString("00");
+                        payload = "FF04" + ws_currentUser.ToString("00") + ws_currentPart.ToString("00") +
+                                  "00" + ws_currentRegistry.ToString("00");
                         break;
                     case 5: // Delete all user Data
-                        payload = "FF05" + currentUser.ToString("00") + "55AA55";
+                        payload = "FF05" + ws_currentUser.ToString("00") + "55AA55";
                         break;
                 }
-                
+                Console.WriteLine (payload);
+
                 SendPayload(payload);
             }
 
@@ -2760,8 +2767,53 @@ namespace GenericHid
         }
 
 
+        private void processScaleResponse(byte[] buffer, ReportReadOrWritten currentReadOrWritten)
+        {
+            if (currentReadOrWritten == ReportReadOrWritten.Written)
+            {
+                if (_myHid.Capabilities.InputReportByteLength > 0)
+                    cmdGetInputReportInterrupt_Click(this, EventArgs.Empty);
+                return;
+            }
+            else
+            {
+                switch (ws_currentProcess)
+                {
+                    case 3:
+                        ws_currentRegistryFound = buffer[5];
+
+                        if (ws_currentRegistryFound > 0)
+                            ws_currentProcess = 4;
+                        else
+                            nextUser();
+                        break;
+                }
+
+                _transferInProgress = false;
+                ReadAndWriteToDevice();
 
 
 
+                
+            }
+
+        }
+
+        private void nextUser()
+        {
+            if(ws_maxUser > ws_currentUser)
+            {
+                ws_currentUser++;
+                ws_currentRegistry = 1;
+                ws_currentPart = 1;
+            }
+            else
+            {   
+                ws_currentRegistry = 1;
+                ws_currentProcess = 0;
+            }
+
+
+        }
     }
 }
