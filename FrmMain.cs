@@ -682,7 +682,7 @@ namespace GenericHid
         private int ws_maxUser;
         private int ws_pass;
 
-        
+        #region Enums
         private enum FormActions
 		{
 			AddItemToListBox,
@@ -730,12 +730,12 @@ namespace GenericHid
 			DeviceID,
 			ClassGUID
 		}
+        #endregion
 
-		internal FrmMain FrmMy;
+        internal FrmMain FrmMy;
 
 		//  This delegate has the same parameters as AccessForm.
 		//  Used in accessing the application's form from a different thread.
-
 		private delegate void MarshalDataToForm(FormActions action, String textToAdd);
 
 		///  <summary>
@@ -746,7 +746,6 @@ namespace GenericHid
 		///  <param name="action"> a FormActions member that names the action to perform on the form</param>
 		///  <param name="formText"> text that the form displays or the code uses for 
 		///  another purpose. Actions that don't use text ignore this parameter. </param>
-
 		private void AccessForm(FormActions action, String formText)
 		{
 			try
@@ -805,7 +804,6 @@ namespace GenericHid
 		///  <summary>
 		///  Add a handler to detect arrival of devices using WMI.
 		///  </summary>
-
 		private void AddDeviceArrivedHandler()
 		{
 			const Int32 pollingIntervalSeconds = 3;
@@ -834,7 +832,6 @@ namespace GenericHid
 		///  <summary>
 		///  Add a handler to detect removal of devices using WMI.
 		///  </summary>
-
 		private void AddDeviceRemovedHandler()
 		{
 			const Int32 pollingIntervalSeconds = 3;
@@ -882,7 +879,6 @@ namespace GenericHid
 		///  <summary>
 		///  Search for a specific device.
 		///  </summary>
-
 		private void cmdFindDevice_Click(Object sender, EventArgs e)
 		{
 			try
@@ -912,7 +908,6 @@ namespace GenericHid
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-
 		private void cmdGetFeatureReport_Click(object sender, EventArgs e)
 		{
 			try
@@ -945,7 +940,6 @@ namespace GenericHid
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-
 		private void cmdGetInputReportControl_Click(object sender, EventArgs e)
 		{
 			try
@@ -1009,7 +1003,6 @@ namespace GenericHid
 		///  <summary>
 		///  Set the number of Input reports the HID driver will store.
 		///  </summary>
-
 		private void cmdInputReportBufferSize_Click(Object sender, EventArgs e)
 		{
 			try
@@ -1036,7 +1029,6 @@ namespace GenericHid
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-
 		private void cmdPeriodicTransfers_Click(object sender, EventArgs e)
 		{
 			try
@@ -1070,7 +1062,6 @@ namespace GenericHid
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-
 		private void cmdSendFeatureReport_Click(object sender, EventArgs e)
 		{
 			try
@@ -1136,7 +1127,6 @@ namespace GenericHid
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-
 		private void cmdSendOutputReportInterrupt_Click(object sender, EventArgs e)
 		{
 			try
@@ -1168,7 +1158,6 @@ namespace GenericHid
 		///  Called on arrival of any device.
 		///  Calls a routine that searches to see if the desired device is present.
 		///  </summary>
-
 		private void DeviceAdded(object sender, EventArrivedEventArgs e)
 		{
 			try
@@ -1187,7 +1176,6 @@ namespace GenericHid
 		///  <summary>
 		///  Called if the user changes the Vendor ID or Product ID in the text box.
 		///  </summary>
-
 		private void DeviceHasChanged()
 		{
 			try
@@ -1214,7 +1202,6 @@ namespace GenericHid
 		///  <summary>
 		///  Add handlers to detect device arrival and removal.
 		///  </summary>
-
 		private void DeviceNotificationsStart()
 		{
 			AddDeviceArrivedHandler();
@@ -1224,7 +1211,6 @@ namespace GenericHid
 		///  <summary>
 		///  Stop receiving notifications about device arrival and removal
 		///  </summary>
-
 		private void DeviceNotificationsStop()
 		{
 			try
@@ -1274,8 +1260,7 @@ namespace GenericHid
 		///  <param name="buffer"> contains the report data. </param>			
 		///  <param name="currentReportType" > "Input", "Output", or "Feature"</param>
 		///  <param name="currentReadOrWritten" > "read" for Input and IN Feature reports, "written" for Output and OUT Feature reports.</param>
-
-		private void DisplayReportData(Byte[] buffer, ReportTypes currentReportType, ReportReadOrWritten currentReadOrWritten)
+        private void DisplayReportData(Byte[] buffer, ReportTypes currentReportType, ReportReadOrWritten currentReadOrWritten)
 		{
 			try
 			{
@@ -1317,8 +1302,7 @@ namespace GenericHid
 				throw;
 			}
 		}
-
-
+        
 
         ///  <summary>
         ///  Display a message if the user clicks a button when a transfer is in progress.
@@ -1376,7 +1360,6 @@ namespace GenericHid
 		/// but will be unable to communicate. The device will show up in Windows Device Manager as well. 
 		/// This situation is unlikely to occur with a final product.
 		/// </remarks>
-
 		private Boolean FindDeviceUsingWmi()
 		{
 			try
@@ -1429,7 +1412,6 @@ namespace GenericHid
 		///  <returns>
 		///   True if the device is detected, False if not detected.
 		///  </returns>
-
 		private Boolean FindTheHid()
 		{
 			var devicePathName = new String[128];
@@ -1598,7 +1580,6 @@ namespace GenericHid
 		///  <summary>
 		///  Perform shutdown operations.
 		///  </summary>
-
 		private void frmMain_Closed(Object eventSender, EventArgs eventArgs)
 		{
 			try
@@ -1615,7 +1596,6 @@ namespace GenericHid
 		///  <summary>
 		///  Perform startup operations.
 		///  </summary>
-
 		private void frmMain_Load(Object eventSender, EventArgs eventArgs)
 		{
 			try
@@ -1668,7 +1648,6 @@ namespace GenericHid
 		///  Find and display the number of Input buffers
 		///  (the number of Input reports the HID driver will store). 
 		///  </summary>
-
 		private void GetInputReportBufferSize()
 		{
 			Int32 numberOfInputBuffers = 0;
@@ -1698,7 +1677,6 @@ namespace GenericHid
 		///  
 		///  <param name="myVendorId"> the Vendor ID</param>
 		///  <param name="myProductId"> the Product ID</param>
-
 		private void GetVendorAndProductIDsFromTextBoxes(ref Int32 myVendorId, ref Int32 myProductId)
 		{
 			try
@@ -1716,7 +1694,6 @@ namespace GenericHid
 		///  <summary>
 		///  Initialize the elements on the form.
 		///  </summary>
-
 		private void InitializeDisplay()
 		{
 			try
@@ -1767,7 +1744,6 @@ namespace GenericHid
 		///  <param name="action"> a FormActions member that names the action to perform on the form </param>
 		///  <param name="textToDisplay"> text that the form displays or the code uses for 
 		///  another purpose. Actions that don't use text ignore this parameter.  </param>
-
 		private void MyMarshalDataToForm(FormActions action, String textToDisplay)
 		{
 			try
@@ -1792,7 +1768,6 @@ namespace GenericHid
 		/// <summary>
 		/// Timeout if read via interrupt transfer doesn't return.
 		/// </summary>
-
 		private void OnReadTimeout()
 		{
 			try
@@ -1816,7 +1791,6 @@ namespace GenericHid
 		/// <summary>
 		/// Timeout if write via interrupt transfer doesn't return.
 		/// </summary>
-
 		private void OnWriteTimeout()
 		{
 			try
@@ -1838,7 +1812,6 @@ namespace GenericHid
 		/// <summary>
 		/// Alternat sending and getting a report.
 		/// </summary>
-
 		private void PeriodicTransfers()
 		{
 			try
@@ -1867,7 +1840,6 @@ namespace GenericHid
 		/// <summary>
 		/// Start doing periodic transfers.
 		/// </summary>
-
 		private void PeriodicTransfersStart()
 		{
 			// Don't allow changing the transfer type while transfers are in progress.
@@ -1920,7 +1892,6 @@ namespace GenericHid
 		/// <summary>
 		/// Stop doing periodic transfers.
 		/// </summary>
-
 		private void PeriodicTransfersStop()
 		{
 			//  Stop doing continuous transfers.
@@ -1959,7 +1930,6 @@ namespace GenericHid
 		///  Request a Feature report.
 		///  Assumes report ID = 0.
 		///  </summary>
-
 		private void RequestToGetFeatureReport()
 		{
 			String byteValue = null;
@@ -2025,7 +1995,6 @@ namespace GenericHid
 		///  Request an Input report.
 		///  Assumes report ID = 0.
 		///  </summary>
-
 		private async void RequestToGetInputReport()
 		{
 			const Int32 readTimeout = 5000;
@@ -2086,29 +2055,23 @@ namespace GenericHid
 									//  To enable reading a report without blocking the calling thread, uses Filestream's ReadAsync method.                                               
 
 									// Create a delegate to execute on a timeout.
-
 									Action onReadTimeoutAction = OnReadTimeout;
 
 									// The CancellationTokenSource specifies the timeout value and the action to take on a timeout.
-
 									var cts = new CancellationTokenSource();
 
 									// Cancel the read if it hasn't completed after a timeout.
-
 									cts.CancelAfter(readTimeout);
 
 									// Specify the function to call on a timeout.
-
 									cts.Token.Register(onReadTimeoutAction);
 
 									// Stops waiting when data is available or on timeout:
-
 									Int32 bytesRead = await _myHid.GetInputReportViaInterruptTransfer(_deviceData, inputReportBuffer, cts);
 
 									// Arrive here only if the operation completed.
 
 									// Dispose to stop the timeout timer. 
-
 									cts.Dispose();
 
 									_transferInProgress = false;
@@ -2159,7 +2122,6 @@ namespace GenericHid
 		///  Sends a Feature report.
 		///  Assumes report ID = 0.
 		///  </summary>
-
 		private void RequestToSendFeatureReport()
 		{
 			String byteValue = null;
@@ -2240,7 +2202,6 @@ namespace GenericHid
 		///  Sends an Output report.
 		///  Assumes report ID = 0.
 		///  </summary>
-
 		private async void RequestToSendOutputReport( string payload = "") // Q-Soft optional payload
 		{
 			const Int32 writeTimeout = 5000;
@@ -2372,7 +2333,6 @@ namespace GenericHid
 		///  <summary>
 		///  Scroll to the bottom of the list box and trim as needed.
 		///  </summary>
-
 		private void ScrollToBottomOfListBox()
 		{
 			try
@@ -2400,7 +2360,6 @@ namespace GenericHid
 		/// <summary>
 		/// Request to send or get a Feature report.
 		/// </summary>
-
 		private void SendOrGetFeatureReport()
 		{
 			try
@@ -2438,7 +2397,6 @@ namespace GenericHid
 		/// <summary>
 		/// Request to send an Output report or get an Input report.
 		/// </summary>
-
 		private void SendOutputReportOrGetInputReport()
 		{
 			try
@@ -2476,7 +2434,6 @@ namespace GenericHid
 		///  Set the number of Input buffers (the number of Input reports 
 		///  the host will store) from the value in the text box.
 		///  </summary>
-
 		private void SetInputReportBufferSize()
 		{
 			try
@@ -2510,7 +2467,6 @@ namespace GenericHid
 		///  <summary>
 		///  Perform actions that must execute when the program ends.
 		///  </summary>
-
 		private void Shutdown()
 		{
 			try
@@ -2528,7 +2484,6 @@ namespace GenericHid
 		///  <summary>
 		///  Perform actions that must execute when the program starts.
 		///  </summary>
-
 		private void Startup()
 		{
 			const Int32 periodicTransferInterval = 1000;
@@ -2563,7 +2518,6 @@ namespace GenericHid
 		///  <summary>
 		///  The Product ID has changed in the text box. Call a routine to handle it.
 		///  </summary>
-
 		private void txtProductID_TextChanged(Object sender, EventArgs e)
 		{
 			try
@@ -2580,7 +2534,6 @@ namespace GenericHid
 		///  <summary>
 		///  The Vendor ID has changed in the text box. Call a routine to handle it.
 		///  </summary>
-
 		private void txtVendorID_TextChanged(Object sender, EventArgs e)
 		{
 			try
@@ -2601,7 +2554,6 @@ namespace GenericHid
 		///  
 		///  <param name="moduleName"> the module where the exception occurred. </param>
 		///  <param name="e"> the exception </param>
-
 		internal static void DisplayException(String moduleName, Exception e)
 		{
 			//  Create an error message.
@@ -2635,10 +2587,8 @@ namespace GenericHid
 			}
 		}
 
-
         //------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+        
         private void btnReadLogger_Click(object sender, EventArgs e)
         {
             ws_currentUser = 1;
@@ -2677,18 +2627,16 @@ namespace GenericHid
                     case 5: // Delete all user Data
                         payload = "FF05" + ws_currentUser.ToString("00") + "55AA55";
                         break;
-
                     case 0:
                         btnReadLogger.Enabled = true;
                         return;
-                
                 }
                 Console.WriteLine (payload);
 
                 SendPayload(payload);
             }
 
-        }
+        } // Main Loop
 
         private void SendPayload(string payload)
         {
@@ -2719,11 +2667,7 @@ namespace GenericHid
 
         public static byte[] HexToByteArray(string hex)
         {
-            int NumberChars = hex.Length;
-            byte[] bytes = new byte[((NumberChars / 2) + 2) + 1];
-           
-             string[] CRCInput = new string[5];
-
+            //HEX String to byte array
             byte[] result =  Enumerable.Range(0, hex.Length)
                              .Where(x => x % 2 == 0)
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
@@ -2731,6 +2675,7 @@ namespace GenericHid
             
             hex = hex.Substring(4);
 
+            //Prepare CRC data
             byte[] toCRC = Enumerable.Range(0, hex.Length)
                             .Where(x => x % 2 == 0)
                             .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
@@ -2738,41 +2683,29 @@ namespace GenericHid
             
             byte[] crc = GetCrc(toCRC);
             
-            
             //Append CRC to the payload
             Array.Resize(ref result, 9);
             
             // Upside down because its little endiand
             if (BitConverter.IsLittleEndian)
-            {
-                result[7] = crc[1];
-                result[8] = crc[0];
-            }
-            else
-            {
-                result[7] = crc[0];
-                result[8] = crc[1];
-            }
-
+                Array.Reverse(crc);
+            
+            result[7] = crc[2];
+            result[8] = crc[3];
             return result;
-
         }
-
-
+        
         public static byte[] GetCrc(byte[] bytes)
         {
-
             int crc = 0x0; // Starting value 
             int Polynom = 0x1021; // As in X^16 + X^12 + X^5 + 1 
-            //byte[] bytes = null;
             bool bit = false;
             bool c15 = false;
-            int i = 0;
             
             // Calculate the CRC: 
             foreach (byte b in bytes)
             {
-                for ( i = 0; i <= 7; i++)
+                for (int i = 0; i <= 7; i++)
                 {
                     bit = ((b >> (7 - i) & 1)) ==1;
                     c15 = ((crc >> 15 & 1)) ==1;
@@ -2783,14 +2716,11 @@ namespace GenericHid
                     }
                 }
             }
-
             crc = crc & 0xffff;
             
             return  BitConverter.GetBytes(crc); ;
-
         }
-
-
+        
         private void processScaleResponse(byte[] buffer, ReportReadOrWritten currentReadOrWritten)
         {
             if (currentReadOrWritten == ReportReadOrWritten.Written)
@@ -2816,6 +2746,7 @@ namespace GenericHid
                         if (ws_currentPart == 1)
                         {
                             ws_currentReg.boneKG = (float)buffer[2] / (float)10;
+                            Debug.WriteLine("Bone {0:0.0}", (ws_currentReg.boneKG * 2.20462));
                             byte[] lByte = new byte[2];
                             lByte[0] = buffer[3];
                             lByte[1] = buffer[4];
@@ -2823,10 +2754,9 @@ namespace GenericHid
                             {
                                 Array.Reverse(lByte);
                             }
-
-
+                            
                             ws_currentReg.weightKG = BitConverter.ToUInt16(lByte, 0) / (float)10;
-                            Debug.WriteLine("Weight " + (ws_currentReg.weightKG * 2.20462));
+                            Debug.WriteLine("Weight {0:0.0}", (ws_currentReg.weightKG * 2.20462));
 
                             //Dim lByte(1) As Byte
                             lByte[0] = buffer[5];
@@ -2837,7 +2767,7 @@ namespace GenericHid
                             }
 
                             ws_currentReg.fat = BitConverter.ToUInt16(lByte, 0) / (float)10;
-                            Debug.WriteLine("Fat " + ws_currentReg.fat + "%");
+                            Debug.WriteLine("Fat {0:0.0}%", ws_currentReg.fat);
 
                             ws_currentPart = 2;
 
@@ -2875,7 +2805,7 @@ namespace GenericHid
 
                             ws_currentReg.water = BitConverter.ToUInt16(lByte, 0) / (float)10;
 
-                            Debug.WriteLine("Water " + ws_currentReg.water + "%");
+                            Debug.WriteLine("Water {0:0.0}%", ws_currentReg.water );
                             
                             lByte[0] = buffer[5];
                             lByte[1] = buffer[6];
@@ -2885,7 +2815,7 @@ namespace GenericHid
                             }
 
                             ws_currentReg.Muscle = (BitConverter.ToUInt16(lByte, 0)) / (float)10;
-                            Debug.WriteLine("Muscle " + ws_currentReg.Muscle + "%");
+                            Debug.WriteLine("Muscle {0:0.0}%", ws_currentReg.Muscle );
                             
                             //recordData();
 
