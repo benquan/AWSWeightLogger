@@ -2930,7 +2930,8 @@ namespace GenericHid
 
         private void btnGraph_Click(object sender, EventArgs e)
         {
-            
+            frmData frm = new frmData();
+            frm.Show();
         }
     }
 }
