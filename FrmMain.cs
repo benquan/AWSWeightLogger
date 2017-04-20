@@ -1,5 +1,6 @@
 using Microsoft.Win32.SafeHandles;
 using System;
+using System.Data.OleDb;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -208,6 +209,7 @@ namespace GenericHid
 		private RadioButton radInputOutputInterrupt;
         private Button btnReadLogger;
         private Button btnErase;
+        private Button btnTest;
         private Button cmdSendOutputReportInterrupt;
 		[System.Diagnostics.DebuggerStepThrough()]
 		private void InitializeComponent()
@@ -245,6 +247,7 @@ namespace GenericHid
             this.radInputOutputInterrupt = new System.Windows.Forms.RadioButton();
             this.btnReadLogger = new System.Windows.Forms.Button();
             this.btnErase = new System.Windows.Forms.Button();
+            this.btnTest = new System.Windows.Forms.Button();
             this.FraBytesReceived.SuspendLayout();
             this.FraBytesToSend.SuspendLayout();
             this.fraInputReportBufferSize.SuspendLayout();
@@ -611,9 +614,20 @@ namespace GenericHid
             this.btnErase.UseVisualStyleBackColor = true;
             this.btnErase.Click += new System.EventHandler(this.btnErase_Click);
             // 
+            // btnTest
+            // 
+            this.btnTest.Location = new System.Drawing.Point(649, 175);
+            this.btnTest.Name = "btnTest";
+            this.btnTest.Size = new System.Drawing.Size(104, 55);
+            this.btnTest.TabIndex = 20;
+            this.btnTest.Text = "Erase Data";
+            this.btnTest.UseVisualStyleBackColor = true;
+            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            // 
             // FrmMain
             // 
             this.ClientSize = new System.Drawing.Size(784, 756);
+            this.Controls.Add(this.btnTest);
             this.Controls.Add(this.btnErase);
             this.Controls.Add(this.btnReadLogger);
             this.Controls.Add(this.fraSendAndGetContinuous);
@@ -1259,10 +1273,10 @@ namespace GenericHid
 		///  
 		///  <param name="buffer"> contains the report data. </param>			
 		///  <param name="currentReportType" > "Input", "Output", or "Feature"</param>
-		///  <param name="currentReadOrWritten" > "read" for Input and IN Feature reports, "written" for Output and OUT Feature reports.</param>
-        private void DisplayReportData(Byte[] buffer, ReportTypes currentReportType, ReportReadOrWritten currentReadOrWritten)
-		{
-			try
+		///  <param name="currentReadOrWritten" > "read" for Input and IN Feature reports, "written" for Output and OUT Feature reports.</param> 
+        private void DisplayReportData(Byte[] buffer, ReportTypes currentReportType, ReportReadOrWritten currentReadOrWritten) // Calls processScaleResponse
+        {
+			//try
 			{
 				Int32 count;
 
@@ -1296,14 +1310,13 @@ namespace GenericHid
 
 
             }
-			catch (Exception ex)
-			{
-				DisplayException(Name, ex);
-				throw;
-			}
+			//catch (Exception ex)
+			//{
+			//	DisplayException(Name, ex);
+			//	throw;
+			//}
 		}
         
-
         ///  <summary>
         ///  Display a message if the user clicks a button when a transfer is in progress.
         ///  </summary>
@@ -1321,8 +1334,7 @@ namespace GenericHid
 		/// <param name="e"></param>
 		///  <remarks>
 		///  The timer is enabled only if continuous (periodic) transfers have been requested.
-		///  </remarks>		  
-
+		///  </remarks>
 		private void DoPeriodicTransfers(object source, ElapsedEventArgs e)
 		{
 			try
@@ -2002,8 +2014,8 @@ namespace GenericHid
 			String byteValue = null;
 			Byte[] inputReportBuffer = null;
 
-			try
-			{
+			//try
+			//{
 				Boolean success = false;
 
 				//  If the device hasn't been detected, was removed, or timed out on a previous attempt
@@ -2109,13 +2121,14 @@ namespace GenericHid
 						ScrollToBottomOfListBox();
 					}
 				}
-			}
+			//}
 
-			catch (Exception ex)
-			{
-				DisplayException(Name, ex);
-				throw;
-			}
+			//catch (Exception ex)
+			//{
+			//	DisplayException(Name, ex);
+				
+   //             //throw;
+			//}
 		}
 
 		///  <summary>
@@ -2751,10 +2764,8 @@ namespace GenericHid
                             lByte[0] = buffer[3];
                             lByte[1] = buffer[4];
                             if ((BitConverter.IsLittleEndian))
-                            {
                                 Array.Reverse(lByte);
-                            }
-                            
+
                             ws_currentReg.weightKG = BitConverter.ToUInt16(lByte, 0) / (float)10;
                             Debug.WriteLine("Weight {0:0.0}", (ws_currentReg.weightKG * 2.20462));
 
@@ -2762,47 +2773,39 @@ namespace GenericHid
                             lByte[0] = buffer[5];
                             lByte[1] = buffer[6];
                             if ((BitConverter.IsLittleEndian))
-                            {
                                 Array.Reverse(lByte);
-                            }
 
                             ws_currentReg.fat = BitConverter.ToUInt16(lByte, 0) / (float)10;
                             Debug.WriteLine("Fat {0:0.0}%", ws_currentReg.fat);
 
                             ws_currentPart = 2;
-
-
                         }
                         else // part 2
                         {
-
                             ushort num = Convert.ToUInt16(buffer[1]);
 
                             byte b1 = (Byte)(num & 0x1f);
                             byte b2 = (Byte)((num >> 5) & 0x1f);
-
-
+                            
                             Debug.WriteLine("CheckBox : " + b2);
 
                             num = Convert.ToUInt16(buffer[2]);
                             byte b3 = (Byte)(num & 0xf);
                             byte b4 = (Byte)((num >> 4) & 0xf);
 
-                            ws_currentReg.fecha = Convert.ToDateTime(string.Format("{0}/{1}/{2} ", b3, b1, 2016 + b4));
+                            string dt = string.Format("{0}/{1}/{2} ", b3, b1, 2016 + b4);
+                            ws_currentReg.fecha = Convert.ToDateTime(dt);
                             //Debug.WriteLine("Dia " & b1)
                             //Debug.WriteLine("Mes " & b3)
                             //Debug.WriteLine("Ano " & 2016 + b4)
                             Debug.WriteLine(ws_currentReg.fecha);
-
-
+                            
                             byte[] lByte = new byte[2];
                             lByte[0] = buffer[3];
                             lByte[1] = buffer[4];
                             if ((BitConverter.IsLittleEndian))
-                            {
                                 Array.Reverse(lByte);
-                            }
-
+                            
                             ws_currentReg.water = BitConverter.ToUInt16(lByte, 0) / (float)10;
 
                             Debug.WriteLine("Water {0:0.0}%", ws_currentReg.water );
@@ -2810,42 +2813,87 @@ namespace GenericHid
                             lByte[0] = buffer[5];
                             lByte[1] = buffer[6];
                             if ((BitConverter.IsLittleEndian))
-                            {
                                 Array.Reverse(lByte);
-                            }
-
+                            
                             ws_currentReg.Muscle = (BitConverter.ToUInt16(lByte, 0)) / (float)10;
                             Debug.WriteLine("Muscle {0:0.0}%", ws_currentReg.Muscle );
                             
-                            //recordData();
+                            recordData();
 
                             ws_currentReg.clear();
-
-
+                            
                             ws_currentPart = 1;
                             if (ws_currentRegistry < ws_currentRegistryFound)
                             {
-                                ws_currentRegistry += 1;
+                                ws_currentRegistry++;
                             }
                             else
                             {
                                 ws_currentProcess = 3;
                                 nextUser();
-                                //MyMarshalToForm("NextUser", "")
                             }
                         }
-
                         break;
-
                     case 5:
                         nextUser();
                         break;
                 }
-
                 _transferInProgress = false;
                 ReadAndWriteToDevice();
-                
             }
+        }
+
+        private void recordData()
+        {
+            //throw new NotImplementedException();
+
+            string connString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\BioWeigh.accdb";
+
+
+            //connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\BioWeigh.accdb"
+
+            OleDbConnection myConnection = new OleDbConnection();
+
+            myConnection.ConnectionString = connString;
+            myConnection.Open();
+
+            string str1 = null;
+            string str2 = null;
+            str1 = "delete from tbldata where [userID] = @UserID and [Fecha] = @Fecha";
+            str2 = "insert into tblData([UserID],[Fecha], [weightKG], [BoneKG], [Fat], [Water], [Muscle]) " + "values (@UserID,@Fecha,@WeightKG,@BoneKG,@Fat,@Water,@Muscle) ";
+
+            OleDbCommand cmd = new OleDbCommand(str1, myConnection);
+
+            cmd.Parameters.AddWithValue("@UserID", ws_currentUser);
+
+            System.DateTime dd = DateTime.Today;
+            cmd.Parameters.AddWithValue("@Fecha", Convert.ToString(ws_currentReg.fecha));
+            cmd.Parameters.AddWithValue("@Weight", ws_currentReg.weightKG);
+            cmd.Parameters.AddWithValue("@BoneKG", ws_currentReg.boneKG);
+            cmd.Parameters.AddWithValue("@Fat", ws_currentReg.fat);
+            cmd.Parameters.AddWithValue("@Water", ws_currentReg.water);
+            cmd.Parameters.AddWithValue("@Muscle", ws_currentReg.Muscle);
+
+
+
+            cmd.ExecuteNonQuery();
+            cmd.CommandText = str2;
+            cmd.ExecuteNonQuery();
+            cmd.Dispose();
+            myConnection.Close();
+
+            //=======================================================
+            //Service provided by Telerik (www.telerik.com)
+            //Conversion powered by NRefactory.
+            //Twitter: @telerik
+            //Facebook: facebook.com/telerik
+            //=======================================================
+
+
+
+
+
+
 
         }
 
@@ -2874,6 +2922,11 @@ namespace GenericHid
             ws_maxUser = 10;
             btnReadLogger.Enabled = false;
             ReadAndWriteToDevice();
+        }
+
+        private void btnTest_Click(object sender, EventArgs e)
+        {
+            recordData();
         }
     }
 }
