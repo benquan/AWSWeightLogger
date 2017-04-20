@@ -207,9 +207,10 @@ namespace GenericHid
 		private RadioButton radFeature;
 		private RadioButton radInputOutputControl;
 		private RadioButton radInputOutputInterrupt;
-        private Button btnReadLogger;
+        private GroupBox groupBox1;
+        private Button btnGraph;
         private Button btnErase;
-        private Button btnTest;
+        private Button btnReadLogger;
         private Button cmdSendOutputReportInterrupt;
 		[System.Diagnostics.DebuggerStepThrough()]
 		private void InitializeComponent()
@@ -245,9 +246,10 @@ namespace GenericHid
             this.radFeature = new System.Windows.Forms.RadioButton();
             this.radInputOutputControl = new System.Windows.Forms.RadioButton();
             this.radInputOutputInterrupt = new System.Windows.Forms.RadioButton();
-            this.btnReadLogger = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnGraph = new System.Windows.Forms.Button();
             this.btnErase = new System.Windows.Forms.Button();
-            this.btnTest = new System.Windows.Forms.Button();
+            this.btnReadLogger = new System.Windows.Forms.Button();
             this.FraBytesReceived.SuspendLayout();
             this.FraBytesToSend.SuspendLayout();
             this.fraInputReportBufferSize.SuspendLayout();
@@ -255,6 +257,7 @@ namespace GenericHid
             this.fraInterruptTransfers.SuspendLayout();
             this.fraControlTransfers.SuspendLayout();
             this.fraSendAndGetContinuous.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // FraBytesReceived
@@ -344,6 +347,8 @@ namespace GenericHid
             // 
             // LstResults
             // 
+            this.LstResults.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.LstResults.BackColor = System.Drawing.SystemColors.Window;
             this.LstResults.Cursor = System.Windows.Forms.Cursors.Default;
             this.LstResults.Font = new System.Drawing.Font("Arial", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -353,7 +358,7 @@ namespace GenericHid
             this.LstResults.Location = new System.Drawing.Point(12, 424);
             this.LstResults.Name = "LstResults";
             this.LstResults.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.LstResults.Size = new System.Drawing.Size(760, 326);
+            this.LstResults.Size = new System.Drawing.Size(786, 326);
             this.LstResults.TabIndex = 0;
             // 
             // fraInputReportBufferSize
@@ -568,7 +573,6 @@ namespace GenericHid
             this.radFeature.TabStop = true;
             this.radFeature.Text = "Feature";
             this.radFeature.UseVisualStyleBackColor = true;
-            this.radFeature.CheckedChanged += new System.EventHandler(this.radFeature_CheckedChanged);
             // 
             // radInputOutputControl
             // 
@@ -580,7 +584,6 @@ namespace GenericHid
             this.radInputOutputControl.TabStop = true;
             this.radInputOutputControl.Text = "Input Output Control";
             this.radInputOutputControl.UseVisualStyleBackColor = true;
-            this.radInputOutputControl.CheckedChanged += new System.EventHandler(this.radInputOutputControl_CheckedChanged);
             // 
             // radInputOutputInterrupt
             // 
@@ -592,44 +595,54 @@ namespace GenericHid
             this.radInputOutputInterrupt.TabStop = true;
             this.radInputOutputInterrupt.Text = "Input Output Interrupt";
             this.radInputOutputInterrupt.UseVisualStyleBackColor = true;
-            this.radInputOutputInterrupt.CheckedChanged += new System.EventHandler(this.radInputOutputInterrupt_CheckedChanged);
             // 
-            // btnReadLogger
+            // groupBox1
             // 
-            this.btnReadLogger.Location = new System.Drawing.Point(649, 37);
-            this.btnReadLogger.Name = "btnReadLogger";
-            this.btnReadLogger.Size = new System.Drawing.Size(104, 55);
-            this.btnReadLogger.TabIndex = 18;
-            this.btnReadLogger.Text = "Read Weight";
-            this.btnReadLogger.UseVisualStyleBackColor = true;
-            this.btnReadLogger.Click += new System.EventHandler(this.btnReadLogger_Click);
+            this.groupBox1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.groupBox1.Controls.Add(this.btnGraph);
+            this.groupBox1.Controls.Add(this.btnErase);
+            this.groupBox1.Controls.Add(this.btnReadLogger);
+            this.groupBox1.Location = new System.Drawing.Point(651, 37);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(140, 272);
+            this.groupBox1.TabIndex = 21;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "AWS Scale";
+            // 
+            // btnGraph
+            // 
+            this.btnGraph.Location = new System.Drawing.Point(18, 178);
+            this.btnGraph.Name = "btnGraph";
+            this.btnGraph.Size = new System.Drawing.Size(104, 55);
+            this.btnGraph.TabIndex = 23;
+            this.btnGraph.Text = "Graph Data";
+            this.btnGraph.UseVisualStyleBackColor = true;
+            this.btnGraph.Click += new System.EventHandler(this.btnGraph_Click);
             // 
             // btnErase
             // 
-            this.btnErase.Location = new System.Drawing.Point(649, 107);
+            this.btnErase.Location = new System.Drawing.Point(18, 110);
             this.btnErase.Name = "btnErase";
             this.btnErase.Size = new System.Drawing.Size(104, 55);
-            this.btnErase.TabIndex = 19;
+            this.btnErase.TabIndex = 22;
             this.btnErase.Text = "Erase Data";
             this.btnErase.UseVisualStyleBackColor = true;
             this.btnErase.Click += new System.EventHandler(this.btnErase_Click);
             // 
-            // btnTest
+            // btnReadLogger
             // 
-            this.btnTest.Location = new System.Drawing.Point(649, 175);
-            this.btnTest.Name = "btnTest";
-            this.btnTest.Size = new System.Drawing.Size(104, 55);
-            this.btnTest.TabIndex = 20;
-            this.btnTest.Text = "Erase Data";
-            this.btnTest.UseVisualStyleBackColor = true;
-            this.btnTest.Click += new System.EventHandler(this.btnTest_Click);
+            this.btnReadLogger.Location = new System.Drawing.Point(18, 40);
+            this.btnReadLogger.Name = "btnReadLogger";
+            this.btnReadLogger.Size = new System.Drawing.Size(104, 55);
+            this.btnReadLogger.TabIndex = 21;
+            this.btnReadLogger.Text = "Read Weight";
+            this.btnReadLogger.UseVisualStyleBackColor = true;
+            this.btnReadLogger.Click += new System.EventHandler(this.btnReadLogger_Click);
             // 
             // FrmMain
             // 
-            this.ClientSize = new System.Drawing.Size(784, 756);
-            this.Controls.Add(this.btnTest);
-            this.Controls.Add(this.btnErase);
-            this.Controls.Add(this.btnReadLogger);
+            this.ClientSize = new System.Drawing.Size(810, 756);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.fraSendAndGetContinuous);
             this.Controls.Add(this.fraControlTransfers);
             this.Controls.Add(this.fraInterruptTransfers);
@@ -657,6 +670,7 @@ namespace GenericHid
             this.fraControlTransfers.ResumeLayout(false);
             this.fraSendAndGetContinuous.ResumeLayout(false);
             this.fraSendAndGetContinuous.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -1926,18 +1940,6 @@ namespace GenericHid
 			radInputOutputInterrupt.Enabled = true;
 		}
 
-		private void radInputOutputControl_CheckedChanged(object sender, EventArgs e)
-		{
-		}
-
-		private void radInputOutputInterrupt_CheckedChanged(object sender, EventArgs e)
-		{
-		}
-
-		private void radFeature_CheckedChanged(object sender, EventArgs e)
-		{
-		}
-
 		///  <summary>
 		///  Request a Feature report.
 		///  Assumes report ID = 0.
@@ -2602,21 +2604,7 @@ namespace GenericHid
 
         //------------------------------------------------------------------------------------------------------------------------------------------------------
         
-        private void btnReadLogger_Click(object sender, EventArgs e)
-        {
-            ws_currentUser = 1;
-            ws_currentProcess = 3;
-            ws_currentPart = 1;
-            ws_currentRegistry = 1;
-            ws_currentRegistryFound = 0;
-            ws_pass = 0;
-            ws_maxUser = 10;
 
-            btnReadLogger.Enabled = false;
-
-            ReadAndWriteToDevice();
-
-        }
 
         private void ReadAndWriteToDevice()
         {
@@ -2914,6 +2902,22 @@ namespace GenericHid
 
         }
 
+        private void btnReadLogger_Click(object sender, EventArgs e)
+        {
+            ws_currentUser = 1;
+            ws_currentProcess = 3;
+            ws_currentPart = 1;
+            ws_currentRegistry = 1;
+            ws_currentRegistryFound = 0;
+            ws_pass = 0;
+            ws_maxUser = 10;
+
+            btnReadLogger.Enabled = false;
+
+            ReadAndWriteToDevice();
+
+        }
+
         private void btnErase_Click(object sender, EventArgs e)
         {
             ws_currentUser = 1;
@@ -2924,9 +2928,9 @@ namespace GenericHid
             ReadAndWriteToDevice();
         }
 
-        private void btnTest_Click(object sender, EventArgs e)
+        private void btnGraph_Click(object sender, EventArgs e)
         {
-            recordData();
+            
         }
     }
 }
