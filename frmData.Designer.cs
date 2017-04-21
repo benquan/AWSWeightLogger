@@ -48,7 +48,7 @@
             this.Chart1.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.Chart1.Legends.Add(legend1);
-            this.Chart1.Location = new System.Drawing.Point(12, 55);
+            this.Chart1.Location = new System.Drawing.Point(12, 58);
             this.Chart1.Name = "Chart1";
             series1.BorderWidth = 3;
             series1.ChartArea = "ChartArea1";
@@ -74,19 +74,20 @@
             this.Chart1.Series.Add(series2);
             this.Chart1.Series.Add(series3);
             this.Chart1.Series.Add(series4);
-            this.Chart1.Size = new System.Drawing.Size(908, 514);
+            this.Chart1.Size = new System.Drawing.Size(908, 511);
             this.Chart1.TabIndex = 0;
             this.Chart1.Text = "Chart1";
             // 
             // comboBox1
             // 
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Ben",
             "Connie"});
             this.comboBox1.Location = new System.Drawing.Point(24, 13);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(230, 21);
+            this.comboBox1.Size = new System.Drawing.Size(156, 39);
             this.comboBox1.TabIndex = 1;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 

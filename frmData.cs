@@ -13,12 +13,8 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace GenericHid
 {
-
-
     public partial class frmData : Form
     {
-
-
         string provider;
         string dataFile;
         string connString;
@@ -26,8 +22,7 @@ namespace GenericHid
         OleDbConnection myConnection = new OleDbConnection();
         int userID;
         Random Rand = new Random();
-
-
+        
         public frmData()
         {
             InitializeComponent();
@@ -59,7 +54,7 @@ namespace GenericHid
         {
 
             connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\BioWeigh.accdb";
-            string tblFields = "SELECT * from qryData where userid = " + comboBox1.SelectedIndex + 1 + " order by fecha ";
+            string tblFields = "SELECT * from qryData where userid = " + (comboBox1.SelectedIndex + 1) + " order by fecha ";
 
             OleDbConnection conn = new OleDbConnection(connString);
             OleDbCommand oCmd = new OleDbCommand(tblFields, conn);
