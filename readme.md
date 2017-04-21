@@ -1,9 +1,9 @@
 
 # AWS Weight Scale 
-![Q-Soft.logo](http://qsoftsv.com/images/qsoft-150.png)
+[![Q-Soft.logo](http://qsoftsv.com/images/qsoft-150.png)](http://qsoftsv.com)
 
 ## Project Description
-This program tries to read data from a BioWeigh-USB BIA Fitness Scale using C#. Once data is downloaded you can decide what to do with the information, save to a database or anything you want.
+This program tries to read data from a BioWeigh-USB BIO Fitness Scale using C#. Once data is downloaded you can decide what to do with the information, save to a database or anything you want.
 
 ### To use:
 Run Application
