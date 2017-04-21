@@ -654,7 +654,7 @@ namespace GenericHid
 		///   1 on success. 0 on failure.
 		///  </returns>            
 
-		internal async Task<Boolean> SendOutputReportViaInterruptTransfer
+		internal async Task<Boolean> SendOutputReportViaInterruptTransferAsync
 			(FileStream fileStreamDeviceData, SafeFileHandle hidHandle, Byte[] outputReportBuffer, CancellationTokenSource cts)
 		{
 			try

@@ -1313,7 +1313,7 @@ namespace GenericHid
 
 					//  Display the received bytes in the text box.
 
-					TxtBytesReceived.SelectionStart = TxtBytesReceived.Text.Length;
+					TxtBytesReceived.SelectionStart = TxtBytesReceived.Text.Length; 
 					TxtBytesReceived.SelectedText = byteValue + Environment.NewLine;
 				}
 				ScrollToBottomOfListBox();
@@ -2309,7 +2309,7 @@ namespace GenericHid
 
 							// Send an Output report and wait for completion or timeout.
 
-							success = await _myHid.SendOutputReportViaInterruptTransfer(_deviceData, _hidHandle, outputReportBuffer, cts);
+							success = await _myHid.SendOutputReportViaInterruptTransferAsync(_deviceData, _hidHandle, outputReportBuffer, cts);
 
 							// Get here only if the operation completes without a timeout.
 
@@ -2904,6 +2904,14 @@ namespace GenericHid
 
         private void btnReadLogger_Click(object sender, EventArgs e)
         {
+            //CloseCommunications();
+            // if (currentReadOrWritten == ReportReadOrWritten.Written)
+            //{
+            //    if (_myHid.Capabilities.InputReportByteLength > 0)
+            //    //    cmdGetInputReportInterrupt_Click(this, EventArgs.Empty);
+            //    return;
+            //}
+
             ws_currentUser = 1;
             ws_currentProcess = 3;
             ws_currentPart = 1;
